@@ -61,15 +61,22 @@ const RESTAURANT = {
 });
   // route to the menu 
   app.get("/menu", (req, res) => {
-    res.render("menu", { menuItems });
+    res.render("menu", { menuItems: RESTAURANT.menu });
   });
   app.get("/menu/:category", (req, res) => {
-    const { category } = req.params;
+    const {category} = req.params();
     const filteredItems = menuItem.filter(item => item.category.toLowerCase() === category.toLowerCase());
-    const formattedCategory = category.charAt(0).toUppperCase() + category.slice(1); 
+    const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1); 
+    const menuItems = RESTAURANT.menu.filter(item => item.category === category);
     res.render("category", { menuItems: filteredItems, category: formattedCategory });
   });
-
+  /*
+app.get('/menu/:category', (req, res) => {
+  const category = req.params.category.toLowerCase();
+  const menuItems = RESTAURANT.menu.filter(item => item.category === category);
+  const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+  
+  res.render('category', { menuItems, category: capitalizedCategory });*/
   app.listen(port, () => {
     console.log(`Server running at https://localhost:${port}/`);
 });
